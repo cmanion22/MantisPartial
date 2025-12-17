@@ -1,0 +1,57 @@
+<template>
+    <lightning-card class="custom-card">
+        <div class="custom-header slds-p-around_small">
+            <div class="slds-grid slds-gutters slds-wrap">
+                <div class="slds-col slds-has-flexi-truncate">
+                    <h1 class="slds-text-heading_small slds-truncate slds-m-left_small" title="Internal Attendees">
+                        <lightning-icon icon-name="standard:user" alternative-text="Internal Attendees" size="small" class="slds-m-right_x-small"></lightning-icon>
+                        Internal Attendees
+                    </h1>
+                </div>
+                <div class="slds-col slds-no-flex slds-grid slds-align-top slds-m-right_small">
+                    <lightning-button label="New" onclick={handleNewAttendee}></lightning-button>
+                    <lightning-button label="Delete" onclick={handleDeleteSelectedAttendee} class="slds-m-left_x-small"></lightning-button>
+                </div>
+            </div>
+        </div>
+        <div class="custom-datatable">
+            <template if:true={internalAttendees}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={internalAttendees}
+                    columns={columns}
+                    max-row-selection="1"
+                    onrowselection={handleRowSelection}>
+                </lightning-datatable>
+            </template>
+            <template if:true={error}>
+                <div class="slds-text-color_error">{error}</div>
+            </template>
+        </div>
+    </lightning-card>
+
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium">New Internal Attendee</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-record-edit-form object-api-name="Internal_Attendees__c" onsuccess={handleSuccess} onsubmit={handleSubmit}>
+                        <lightning-messages></lightning-messages>
+                        <lightning-input-field field-name="Attendee__c"></lightning-input-field>
+                        <lightning-button class="slds-m-top_medium" variant="brand" label="Save" type="submit"></lightning-button>
+                    </lightning-record-edit-form>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

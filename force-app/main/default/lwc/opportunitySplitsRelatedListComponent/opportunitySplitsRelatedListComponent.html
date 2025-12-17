@@ -1,0 +1,159 @@
+<template>
+    <lightning-card class="custom-card">
+        <!-- Header Section -->
+        <div class="custom-header slds-p-around_small">
+            <div class="slds-grid slds-gutters slds-wrap">
+                <div class="slds-col slds-has-flexi-truncate">
+                    <h2 class="slds-text-heading_small slds-truncate slds-m-left_small bold-text custom-opportunity-splits" title="Opportunity Splits">
+                        <lightning-icon icon-name="standard:opportunity_splits" alternative-text="Opportunity Splits" size="small" class="slds-m-right_x-small custom-opportunity-icon"></lightning-icon>
+                        Opportunity Splits ({splitCount})
+                    </h2>
+                </div>
+                <!-- Button Section -->
+                <div class="slds-col slds-no-flex slds-grid slds-align-top slds-m-right_small custom-button-group">
+                    <template if:true={permissions.showNew}>
+                        <lightning-button label="New Opportunity Split" onclick={handleNewSplit}></lightning-button>
+                    </template>
+                    <template if:true={permissions.showEdit}>
+                        <lightning-button label="Edit Opportunity Splits" onclick={handleEditOpportunitySplits} class="slds-m-left_x-small"></lightning-button>
+                    </template>
+                    <template if:true={permissions.showChangeRequest}>
+                        <lightning-button label="Submit Change Request" onclick={handleSubmitForApproval} class="slds-m-left_x-small"></lightning-button>
+                    </template>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Datatable Section -->
+        <div class="custom-datatable custom-datatable-size">
+            <template if:true={opportunitySplits}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={tableData}
+                    columns={columnsWithConditionalField}
+                    hide-checkbox-column>
+                </lightning-datatable>
+            </template>
+        </div>
+    </lightning-card>
+
+    <!-- Modal for New Opportunity Split -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open custom-modal-size">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium">New Opportunity Split</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    
+                    <!-- Existing Splits Section -->
+                    <template if:true={isDataLoaded}>
+                        <lightning-datatable
+                            key-field="Id"
+                            data={tableData}
+                            columns={existingSplitColumnsWithConditionalField}
+                            draft-values={draftValues}
+                            onsave={handleSaveEdit}
+                            hide-checkbox-column
+                            class="slds-table_resizable custom-datatable-size">
+                        </lightning-datatable>
+    
+                        <!-- Add New Split Button -->
+                        <lightning-button 
+                            variant="neutral" 
+                            label="Add New Split" 
+                            onclick={handleAddSplit} 
+                            class="slds-m-top_small">
+                        </lightning-button>
+                    </template>
+    
+                    <!-- New Split User Picklist Section -->
+                    <template if:true={isUserPicklistVisible}>
+                        <div class="slds-m-bottom_medium">
+                            <!-- Contextual message for the user -->
+                            <p class="slds-text-body_regular">Select a user for the new split. If the user does not appear in the list, make sure they are added as an Opportunity Team Member first.</p>
+                            
+                            <lightning-combobox
+                                name="userPicklist"
+                                placeholder="Sales Rep"
+                                options={ownerOptions}
+                                value={selectedUserId}
+                                onchange={handleUserChange}>
+                            </lightning-combobox>
+                        </div>
+                        <lightning-button
+                            if:true={showAddRow}
+                            variant="brand"
+                            label="Add Row"
+                            onclick={createNewSplit}>
+                        </lightning-button>
+                    </template>
+    
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>        
+
+    <!-- Modal for Edit Existing Opportunity Split -->
+    <template if:true={isEditModalOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-fade-in-open custom-modal-size">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium">Edit Opportunity Splits</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- Existing Splits Section -->
+                    <template if:true={isDataLoaded}>
+                        <lightning-datatable
+                            key-field="Id"
+                            data={tableData}
+                            columns={existingSplitColumnsWithConditionalField}
+                            draft-values={draftValues}
+                            onsave={handleSaveEdit}
+                            hide-checkbox-column>
+                        </lightning-datatable>
+                    </template>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Close" onclick={closeEditModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Flow Modal for Submit for Approval -->
+    <template if:true={isFlowOpen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open custom-modal-size">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeFlowModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <h2 class="slds-text-heading_medium">Submit for Approval</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-flow flow-api-name="Submit_Opportunity_Split_Change_Request"
+                                    flow-input-variables={inputVariables}
+                                    onstatuschange={handleFlowFinish}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

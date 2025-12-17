@@ -1,0 +1,85 @@
+<template>
+    <!-- Loading -->
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading questions..." size="medium"></lightning-spinner>
+    </template>
+
+    <!-- Error -->
+    <template if:true={hasError}>
+        <div class="slds-text-color_error slds-m-top_small">
+            Something went wrong loading or saving the questionnaire. Check console logs for details.
+        </div>
+    </template>
+
+    <!-- Questions -->
+    <template if:true={questions}>
+        <template for:each={questions} for:item="q">
+            <div key={q.Id} class="slds-m-vertical_medium">
+                <!-- Label
+                <div class="slds-text-title_bold slds-m-bottom_x-small">{q.Question_Name__c}</div> -->
+
+                <!-- Picklist -->
+                <template if:true={q.isPicklistType}>
+                    <lightning-combobox
+                        name="pick"
+                        data-question-id={q.Id}
+                        label={q.Question_Name__c}
+                        value={q.currentValue}
+                        required={q.isRequired}
+                        options={q.picklistOptions}
+                        placeholder="Select an option"
+                        onchange={handleInputChange}>
+                    </lightning-combobox>
+                </template>
+
+                <!-- Date -->
+                <template if:true={q.isDateType}>
+                    <lightning-input
+                        type="date"
+                        data-question-id={q.Id}
+                        label={q.Question_Name__c}
+                        value={q.currentValue}
+                        required={q.isRequired}
+                        onchange={handleInputChange}>
+                    </lightning-input>
+                </template>
+
+                <!-- Number / Percent / Currency as plain number for MVP -->
+                <template if:true={q.isNumberType}>
+                    <lightning-input
+                        type="number"
+                        data-question-id={q.Id}
+                        label={q.Question_Name__c}
+                        value={q.currentValue}
+                        required={q.isRequired}
+                        onchange={handleInputChange}>
+                    </lightning-input>
+                </template>
+
+                <!-- Text / Text Area / Long Text Area -->
+                <template if:true={q.isTextType}>
+                    <lightning-textarea
+                        data-question-id={q.Id}
+                        label={q.Question_Name__c}
+                        value={q.currentValue}
+                        required={q.isRequired}
+                        onchange={handleInputChange}>
+                    </lightning-textarea>
+                </template>
+            </div>
+        </template>
+
+        <!-- Submit -->
+        <div class="slds-m-top_large">
+            <lightning-button
+                label="Submit Questionnaire"
+                onclick={handleSubmit}
+                variant="brand">
+            </lightning-button>
+        </div>
+    </template>
+
+    <!-- Success Note -->
+    <template if:true={submissionSuccess}>
+        <div class="slds-text-color_success slds-m-top_medium">Responses submitted successfully.</div>
+    </template>

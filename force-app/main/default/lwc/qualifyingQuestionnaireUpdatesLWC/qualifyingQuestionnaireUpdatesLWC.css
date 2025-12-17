@@ -1,0 +1,15 @@
+/* Max height to create an internal scroll area; tweak to taste */
+.qq-scroll {
+    max-height: 70vh;           /* or use a fixed height like 540px */
+    overflow-y: auto;
+    background: #ffffff;
+    border-radius: 0.25rem;
+}
+
+/* Keep the save bar visible as you scroll */
+.qq-sticky-actions {
+    position: sticky;
+    bottom: 0;
+    /* optional slight fade/top border look */
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.04);
+}

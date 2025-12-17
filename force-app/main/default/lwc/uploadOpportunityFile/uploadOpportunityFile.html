@@ -1,0 +1,40 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <lightning-card title="Upload a new file to this Opportunity">
+        <div class="slds-is-relative">
+            <template lwc:if={fileSelect}>
+                <lightning-input
+                type="file"
+                label="Choose a file"
+                name="fileUploader"
+                onchange={handleFilesChange}
+                lwc:ref="fileInput"
+                class="slds-m-bottom_small"
+                >
+                </lightning-input>
+            </template>
+            <template lwc:else>
+                <p>
+                    Selected file:<br>
+                    {fileName}
+                    <lightning-button variant="base" label="Choose a different file" onclick={handleRemoveFileClick} class="slds-m-left_x-small"></lightning-button>
+                </p>
+                <lightning-input type="text" label="File Name" onchange={handleFileRecordNameChange} value={fileRecordName} class="slds-m-bottom_small"></lightning-input>
+            </template>
+            <lightning-combobox
+                name="progress"
+                label="Attachment Type"
+                value={attachmentType}
+                placeholder="Select an attachment type"
+                options={attachmentTypePicklistValues}
+                onchange={handleAttachmentTypeChange}
+                class="slds-m-bottom_medium"></lightning-combobox>
+            <p>
+                <lightning-button variant="brand" label="Upload file" title="Upload the selected file" onclick={handleUploadFileClick} disabled={disableUploadButton}></lightning-button>
+            </p>
+            <template lwc:if={spin}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+        </div>
+    </lightning-card>
+</template>

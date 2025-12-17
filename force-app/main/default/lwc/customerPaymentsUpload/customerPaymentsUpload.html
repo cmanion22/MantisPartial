@@ -1,0 +1,79 @@
+<template>
+    <lightning-card title="Upload Customer Payments from Unanet" icon-name="custom:custom63">
+        <div class="slds-p-horizontal_medium slds-p-vertical_small">
+
+            <!-- Spinner -->
+            <template if:true={showSpinner}>
+                <div class="slds-is-relative slds-m-bottom_medium slds-text-align_center">
+                    <lightning-spinner alternative-text="Uploading..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- File upload wrapped in themed box -->
+            <div class="slds-box slds-theme_default slds-m-bottom_medium">
+                <lightning-input
+                    type="file"
+                    label="Upload CSV"
+                    accept=".csv"
+                    onchange={handleFileUpload}
+                    disabled={showSpinner}>
+                </lightning-input>
+            </div>
+
+            <!-- Upload success message -->
+            <template if:true={data}>
+                <div class="slds-m-top_medium slds-m-bottom_medium slds-flex slds-align-items_center">
+                    <lightning-icon 
+                        icon-name="utility:success"
+                        alternative-text="Success"
+                        size="x-small"
+                        class="slds-icon slds-icon-text-success slds-m-right_xx-small">
+                    </lightning-icon>
+                    <span class="slds-text-color_success slds-text-body_regular">
+                        Upload successful — {data.length} records processed.
+                    </span>
+                </div>
+
+                <!-- Error count message -->
+                <template if:true={errorCount}>
+                    <div class="slds-m-top_x-small slds-m-bottom_medium slds-flex slds-align-items_center">
+                        <lightning-icon 
+                            icon-name="utility:error"
+                            alternative-text="Error"
+                            size="x-small"
+                            class="slds-icon slds-icon-text-error slds-m-right_xx-small">
+                        </lightning-icon>
+                        <span class="slds-text-color_error slds-text-body_regular">
+                            {errorCount} records failed to upload.
+                        </span>
+                    </div>
+                </template>
+            </template>
+
+            <!-- Download Errors button -->
+            <template if:true={errorCount}>
+                <div class="slds-m-top_medium slds-m-bottom_medium">
+                    <lightning-button 
+                        label="Download Errors CSV" 
+                        variant="neutral" 
+                        icon-name="utility:download"
+                        icon-position="left"
+                        onclick={downloadErrorsCsv}>
+                    </lightning-button>
+                </div>
+            </template>
+
+            <!-- Data table -->
+            <template if:true={data}>
+                <div class="slds-m-top_large slds-m-bottom_large">
+                    <lightning-datatable
+                        key-field="Id"
+                        data={data}
+                        columns={columns}>
+                    </lightning-datatable>
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

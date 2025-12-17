@@ -1,0 +1,28 @@
+<template>
+    <div class="slds-m-top_large">
+        <lightning-card title="Project Files">
+            <div class="slds-is-relative">
+                <div class="slds-m-bottom_medium">
+                    <lightning-button
+                        variant="destructive-text"
+                        label="Delete selected file(s)"
+                        onclick={handleClickDeleteFiles}
+                        disabled={disableDeleteFilesButton}>
+                    </lightning-button>
+                </div>
+                <lightning-datatable
+                    key-field="id"
+                    lwc:ref="filesDatatable"
+                    data={files}
+                    columns={columns}
+                    onrowaction={handleRowAction}
+                    onrowselection={handleRowSelection}
+                    selected-rows={selectedRows}>
+                </lightning-datatable>
+                <template lwc:if={spin}>
+                    <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                </template>
+            </div>
+        </lightning-card>
+    </div>
+</template>

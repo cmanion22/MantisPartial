@@ -1,0 +1,122 @@
+<template>
+    <lightning-card title="Qualifying Questionnaire">
+        <div class="slds-p-around_medium">
+
+            <!-- Loading -->
+            <template if:true={isLoading}>
+                <div class="slds-is-relative" style="min-height:6rem;">
+                    <lightning-spinner alternative-text="Loading responses..." size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <!-- Error -->
+            <template if:true={hasError}>
+                <div class="slds-notify slds-notify_alert slds-theme_error slds-m-bottom_medium" role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <h2>Something went wrong retrieving or saving the responses.</h2>
+                </div>
+            </template>
+
+            <!-- Success -->
+            <template if:true={submissionSuccess}>
+                <div class="slds-notify slds-notify_alert slds-theme_success slds-m-bottom_medium" role="status">
+                    <span class="slds-assistive-text">Success</span>
+                    <h2>Responses updated successfully.</h2>
+                </div>
+            </template>
+
+            <!-- Empty state -->
+            <template if:false={rows.length}>
+                <div class="slds-text-color_weak">
+                    No questions to display.
+                </div>
+            </template>
+
+            <!-- Scrollable content area -->
+            <template if:true={rows.length}>
+                <div class="qq-scroll slds-scrollable_y" role="region" aria-label="Questionnaire">
+                    <div class="slds-form slds-form_stacked slds-p-right_small">
+                        <template for:each={rows} for:item="r">
+                            <!-- Each question row -->
+                            <div key={r.questionId} class="slds-p-vertical_small slds-border_bottom">
+
+                                <!-- Label + optional help
+                                <div class="slds-text-heading_small slds-m-bottom_x-small">
+                                    {r.questionName}
+                                    <template if:true={r.isRequired}>
+                                        <span class="slds-text-color_error slds-m-left_xx-small">*</span>
+                                    </template>
+                                </div> -->
+                                <template if:true={r.helpText}>
+                                    <div class="slds-text-color_weak slds-text-body_small slds-m-bottom_x-small">
+                                        {r.helpText}
+                                    </div>
+                                </template>
+
+                                <!-- PICKLIST -->
+                                <template if:true={r.isPicklistType}>
+                                    <lightning-combobox
+                                        data-question-id={r.questionId}
+                                        label={r.questionName}
+                                        value={r.currentValue}
+                                        required={r.isRequired}
+                                        options={r.picklistOptions}
+                                        placeholder="Select an option"
+                                        onchange={handleInputChange}>
+                                    </lightning-combobox>
+                                </template>
+
+                                <!-- DATE -->
+                                <template if:true={r.isDateType}>
+                                    <lightning-input
+                                        type="date"
+                                        data-question-id={r.questionId}
+                                        label={r.questionName}
+                                        value={r.currentValue}
+                                        required={r.isRequired}
+                                        onchange={handleInputChange}>
+                                    </lightning-input>
+                                </template>
+
+                                <!-- NUMBER / PERCENT / CURRENCY (plain number for MVP) -->
+                                <template if:true={r.isNumberType}>
+                                    <lightning-input
+                                        type="number"
+                                        data-question-id={r.questionId}
+                                        label={r.questionName}
+                                        value={r.currentValue}
+                                        required={r.isRequired}
+                                        onchange={handleInputChange}>
+                                    </lightning-input>
+                                </template>
+
+                                <!-- TEXT / TEXT AREA / LONG TEXT AREA -->
+                                <template if:true={r.isTextType}>
+                                    <lightning-textarea
+                                        data-question-id={r.questionId}
+                                        label={r.questionName}
+                                        value={r.currentValue}
+                                        required={r.isRequired}
+                                        placeholder="Enter response"
+                                        onchange={handleInputChange}>
+                                    </lightning-textarea>
+                                </template>
+
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- Sticky action bar inside the scroll region -->
+                    <div class="qq-sticky-actions slds-p-vertical_small slds-p-right_small slds-text-align_right slds-theme_default">
+                        <lightning-button
+                            label="Save Changes"
+                            variant="brand"
+                            onclick={handleSave}>
+                        </lightning-button>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

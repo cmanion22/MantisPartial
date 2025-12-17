@@ -1,0 +1,31 @@
+<template>
+    <lightning-card title="Select Attachment Type">
+        <lightning-record-edit-form 
+            object-api-name="ContentVersion"
+            onsuccess={closeModal}
+            record-id={recordId}>
+
+            <div class="slds-p-around_medium">
+                <lightning-combobox
+                    name="attachmentType"
+                    label="Attachment Type"
+                    value={attachmentType}
+                    options={attachmentTypeOptions}
+                    onchange={handleAttachmentTypeChange}>
+                </lightning-combobox>
+
+                <lightning-input
+                    type="date"
+                    name="expirationDate"
+                    label="Expiration Date"
+                    value={expirationDate}
+                    onchange={handleExpirationDateChange}>
+                </lightning-input>
+
+                <div class="slds-m-top_medium">
+                    <lightning-button variant="brand" type="submit" label="Submit" onclick={handleSubmit}></lightning-button>
+                </div>
+            </div>
+        </lightning-record-edit-form>
+    </lightning-card>
+</template>

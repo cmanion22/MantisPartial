@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Qualifying Questionnaire</masterLabel>
+
+    <targets>
+        <!-- Flow screens -->
+        <target>lightning__FlowScreen</target>
+        <!-- Optional: record page, app page, home page -->
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+    </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <!-- Inputs -->
+            <property name="projectId" type="String" label="Project Id" description="Id of the Project record" />
+            <property name="solutionType" type="String" label="Solution Type" description="Solution Type for questions" />
+            <property name="opportunityId" type="String" label="Opportunity Id" description="Id of the related Opportunity" />
+            <property name="autoAdvance" type="Boolean" label="Auto Advance Flow" description="If true, finish the Flow after submission" default="false"/>
+            <property name="navigateTo" type="String" label="Navigate To" description="Where to navigate after submission (form, project, opportunity)" />
+            <property name="mechanicalSubtype" type="String" label="Mechanical Subtype (Flow variable)" />
+
+
+            <!-- Outputs -->
+            <property name="formId" type="String" label="Created Form Id" description="Id of the created Qualifying Questionnaire Form" role="outputOnly"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

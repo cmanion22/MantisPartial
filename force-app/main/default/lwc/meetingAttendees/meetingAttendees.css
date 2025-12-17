@@ -1,0 +1,17 @@
+.custom-card {
+    background-color: #f3f2f2; /* Gray background */
+    padding: 0; /* Remove default padding */
+    border: none; /* Ensure there is no border */
+}
+
+.custom-header {
+    background-color: #f3f2f2; /* Gray background */
+    border-bottom: 1px solid #d8dde6; /* Border to connect to the datatable */
+    padding: 0.75rem 1rem; /* Adjust padding for the header */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.custom-datatable {
+    margin: 0;
+    padding: 0;
+}

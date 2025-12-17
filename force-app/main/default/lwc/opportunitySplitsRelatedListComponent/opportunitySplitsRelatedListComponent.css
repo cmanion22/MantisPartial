@@ -1,0 +1,121 @@
+/* Opportunity related list component CSS */
+.custom-header {
+    background-color: #f3f3f3;
+    border-bottom: 1px solid #d8dde6;
+}
+
+.custom-datatable {
+    padding: 0;
+    table-layout: fixed; /* Prevent auto-sizing of columns */
+    width: 100%; /* Ensure table takes full width */
+}
+
+.slds-modal__header {
+    background-color: #2e3c5c;
+    padding: 1rem;
+    color: white;
+}
+
+.slds-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1rem;
+    margin-top: 0;
+}
+
+.custom-datatable-size {
+    max-height: 450px;
+    overflow-y: auto;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+.slds-modal__content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Modal container */
+.custom-modal-size .slds-modal__container {
+    width: 90%;
+    max-width: 900px;
+    height: 90%;
+    max-height: 900px;
+    overflow-y: auto;
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+.custom-icon-size {
+    width: 2rem !important;
+    height: 2rem !important;
+}
+
+/* Opportunity Splits Header */
+.slds-text-heading_small.custom-opportunity-splits {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    margin-left: 2px;
+    line-height: 1.5;
+}
+
+.custom-opportunity-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+/* Button group alignment */
+.custom-button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1px;
+    margin-right: 2px;
+}
+
+.slds-m-left_x-small {
+    margin-left: 0 !important;
+}
+
+.custom-opportunity-splits {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+/* Table cell adjustments */
+.custom-datatable-editable-cell {
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.custom-datatable-editable-cell .slds-cell-edit {
+    margin: 0;
+    padding: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-datatable-editable-cell .slds-button {
+    padding: 0.25rem;
+}
+
+/* Fix for last column width issue */
+.custom-datatable .slds-table th:last-child,
+.custom-datatable .slds-table td:last-child {
+    width: 150px; /* Adjust as needed */
+    min-width: 150px;
+    max-width: 150px;
+    white-space: nowrap;
+    overflow: hidden; /* Ensure text doesn't overflow */
+}
+
+/* Table margins */
+.custom-datatable .slds-table {
+    margin-right: 0;
+}
