@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionNumber>3</activeVersionNumber>
+    <description>If user no longer owns any active opportunities, accounts or leads, changes role to remove them from hierarchical teams</description>
+    <masterLabel>Weekly User Move to Inactive Role</masterLabel>
+</FlowDefinition>
