@@ -187,9 +187,8 @@ public class WorkOrderStatusHandler {
                             String invoiceNumber = sr.Invoice_Number__c;
     
                             String[] toAddresses = new String[] {};
-                            // String email = Email_Approved_Status__c.getInstance('BMS_Email').Email__c;
-                            // toAddresses.Add(email);
-                            toAddresses.Add('cmanion@mantisinnovation.com');
+                            String email = Email_Approved_Status__c.getInstance('BMS_Email').Email__c;
+                            toAddresses.Add(email);
     
                             String formattedActualStartTime = sr.ActualStartTime != null ? sr.ActualStartTime.format('yyyy-MM-dd') : '';
                             String formattedActualEndTime = sr.ActualEndTime != null ? sr.ActualEndTime.format('yyyy-MM-dd') : '';
@@ -208,6 +207,9 @@ public class WorkOrderStatusHandler {
                                     if (prop.Country__c != null) parts.add(prop.Country__c);
                                     address = String.join(parts, ', ');
                                 }
+                            } else {
+                                w.addError('A Property record must be selected to approve this Work Order.');
+    							return;
                             }
     
                             String title = 'WO# ' + w.Work_Order_Number_2__c + ' Invoice# ' + invoiceNumber + ' ' + ( AccountName != null ? AccountName.Name : ''); 

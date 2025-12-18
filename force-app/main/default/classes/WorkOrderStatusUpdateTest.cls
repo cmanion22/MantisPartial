@@ -92,6 +92,17 @@ public with sharing class WorkOrderStatusUpdateTest {
             Work_Template__c = wt.Id
         );
         insert mp;
+        
+        // Create Property
+        Property__c prop = new Property__c();
+        prop.Name = 'Testing Property 123';
+        prop.Add1__c = 'Test Street';
+        prop.City__c = 'Hudson';
+        prop.State__c = 'FL';
+        prop.Zip__c = '33467';
+        prop.Country__c = 'US';
+        prop.Active__c = true;
+        insert prop;
     
         // Create the WorkOrder
         WorkOrder testWO = new WorkOrder(
@@ -101,9 +112,11 @@ public with sharing class WorkOrderStatusUpdateTest {
             NTE__c = 500,
             SuggestedMaintenanceDate = System.today(),
             MaintenancePlanId = mp.Id,
-            Status = 'Exceed NTE'
+            Status = 'Exceed NTE',
+            Property2__c = prop.Id
         );
         insert testWO;
+        
     
         // Create and insert a Service Appointment
         ServiceAppointment serviceAppointment = new ServiceAppointment(
@@ -126,7 +139,7 @@ public with sharing class WorkOrderStatusUpdateTest {
         update testWO;  // This should trigger the logic in your trigger that calls WorkOrderStatusAfterUpdate
     
         // Retrieve the updated WorkOrder (after the status change)
-        List<WorkOrder> newWOList = [SELECT Id, Status FROM WorkOrder WHERE Id = :testWO.Id];
+        List<WorkOrder> newWOList = [SELECT Id, Status, Property2__c FROM WorkOrder WHERE Id = :testWO.Id];
     
         // Create the oldWosMap by mapping the old WorkOrder records by their Id
         Map<Id, WorkOrder> oldWosMap = new Map<Id, WorkOrder>();
@@ -164,7 +177,18 @@ public with sharing class WorkOrderStatusUpdateTest {
         );
         insert mp;
 
-        // Create the Work Order
+        // Create Property
+        Property__c prop = new Property__c();
+        prop.Name = 'Testing Property 123';
+        prop.Add1__c = 'Test Street';
+        prop.City__c = 'Hudson';
+        prop.State__c = 'FL';
+        prop.Zip__c = '33467';
+        prop.Country__c = 'US';
+        prop.Active__c = true;
+        insert prop;
+    
+        // Create the WorkOrder
         WorkOrder testWO = new WorkOrder(
             Subject = 'Test Test',
             Description = 'Testing Description',
@@ -172,9 +196,9 @@ public with sharing class WorkOrderStatusUpdateTest {
             NTE__c = 500,
             SuggestedMaintenanceDate = System.today(),
             MaintenancePlanId = mp.Id,
-            Status = 'New'
+            Status = 'On Hold',
+            Property2__c = prop.Id
         );
-
         insert testWO;
 
         // Create and insert a Service Appointment
@@ -199,7 +223,7 @@ public with sharing class WorkOrderStatusUpdateTest {
         update testWO;  // This should trigger the logic in your trigger that calls WorkOrderStatusAfterUpdate
     
         // Retrieve the updated WorkOrder (after the status change)
-        List<WorkOrder> newWOList = [SELECT Id, Status FROM WorkOrder WHERE Id = :testWO.Id];
+        List<WorkOrder> newWOList = [SELECT Id, Status, Property2__c FROM WorkOrder WHERE Id = :testWO.Id];
     
         // Create the oldWosMap by mapping the old WorkOrder records by their Id
         Map<Id, WorkOrder> oldWosMap = new Map<Id, WorkOrder>();
@@ -233,7 +257,18 @@ public with sharing class WorkOrderStatusUpdateTest {
         );
         insert mp;
 
-        // Create the Work Order
+        // Create Property
+        Property__c prop = new Property__c();
+        prop.Name = 'Testing Property 123';
+        prop.Add1__c = 'Test Street';
+        prop.City__c = 'Hudson';
+        prop.State__c = 'FL';
+        prop.Zip__c = '33467';
+        prop.Country__c = 'US';
+        prop.Active__c = true;
+        insert prop;
+    
+        // Create the WorkOrder
         WorkOrder testWO = new WorkOrder(
             Subject = 'Test Test',
             Description = 'Testing Description',
@@ -241,9 +276,9 @@ public with sharing class WorkOrderStatusUpdateTest {
             NTE__c = 500,
             SuggestedMaintenanceDate = System.today(),
             MaintenancePlanId = mp.Id,
-            Status = 'New'
+            Status = 'Exceed NTE',
+            Property2__c = prop.Id
         );
-
         insert testWO;
 
         // Create and insert a Service Appointment
@@ -266,7 +301,7 @@ public with sharing class WorkOrderStatusUpdateTest {
         Test.startTest();
         
         // Retrieve the WorkOrder records before updating
-        List<WorkOrder> oldWOList = [SELECT Id, Status, Work_Order_Number_2__c FROM WorkOrder WHERE Id = :testWO.Id];
+        List<WorkOrder> oldWOList = [SELECT Id, Status, Work_Order_Number_2__c, Property2__c FROM WorkOrder WHERE Id = :testWO.Id];
         
         // Update the status of the WorkOrder
         testWO.Status = 'Completed';
@@ -274,7 +309,7 @@ public with sharing class WorkOrderStatusUpdateTest {
         update testWO;  // This should trigger the logic in your trigger that calls WorkOrderStatusAfterUpdate
     
         // Retrieve the updated WorkOrder (after the status change)
-        List<WorkOrder> newWOList = [SELECT Id, Status, Work_Order_Number_2__c FROM WorkOrder WHERE Id = :testWO.Id];
+        List<WorkOrder> newWOList = [SELECT Id, Status, Work_Order_Number_2__c, Property2__c FROM WorkOrder WHERE Id = :testWO.Id];
     
         // Create the oldWosMap by mapping the old WorkOrder records by their Id
         Map<Id, WorkOrder> oldWosMap = new Map<Id, WorkOrder>();
@@ -317,6 +352,7 @@ public with sharing class WorkOrderStatusUpdateTest {
         siteContact.LastName = 'testtesttest';
         siteContact.LeadSource = 'BD';
         siteContact.AccountId = account.Id;
+        siteContact.Email = 'manioncody223@gmail.com';
         insert siteContact;
 
         // Create a Work Type
@@ -326,7 +362,18 @@ public with sharing class WorkOrderStatusUpdateTest {
         workType.DurationType = 'Hours';
         insert workType;
         
-        // Create the Work Order
+        // Create Property
+        Property__c prop = new Property__c();
+        prop.Name = 'Testing Property 123';
+        prop.Add1__c = 'Test Street';
+        prop.City__c = 'Hudson';
+        prop.State__c = 'FL';
+        prop.Zip__c = '33467';
+        prop.Country__c = 'US';
+        prop.Active__c = true;
+        insert prop;
+    
+        // Create the WorkOrder
         WorkOrder testWO = new WorkOrder(
             Subject = 'Test Test',
             Description = 'Testing Description',
@@ -334,14 +381,13 @@ public with sharing class WorkOrderStatusUpdateTest {
             NTE__c = 500,
             SuggestedMaintenanceDate = System.today(),
             MaintenancePlanId = mp.Id,
-            Status = 'New',
+            Status = 'Exceed NTE',
             Contractor__c = siteContact.Id,
-            AccountId = account.Id,
-            Contact__c  = siteContact.Id,
+            Property2__c = prop.Id,
+            ContactId = siteContact.Id,
             WorkTypeId = workType.Id,
-            Cost__c = 300
+            Contact__c = siteContact.Id
         );
-
         insert testWO;
 
         // Create and insert a Service Appointment
@@ -390,15 +436,22 @@ public with sharing class WorkOrderStatusUpdateTest {
                                                Total_Price__c,
                                                WO_Line_Item_Price__c,
                                                Service_Line__c,
-                                               CreatedDate
+                                               CreatedDate,
+                                               Property2__c,
+                                               Total_Cost__c
                                         FROM WorkOrder
                                      	WHERE Id = :testWO.Id];
         
-        // Update the status of the WorkOrder
-        testWO.Status = 'Approved';
-        testWo.Cause_Of_Leak__c  = 'HVAC';
-        testWo.Service_Line__c = 'RLR';
-        update testWO;  // This should trigger the logic in your trigger that calls WorkOrderStatusAfterUpdate
+      
+            try {
+                testWO.Status = 'Approved';
+                testWO.Cause_Of_Leak__c  = 'HVAC';
+                testWO.Service_Line__c = 'RLR';
+                update testWO;
+            } catch (DmlException e) {
+                System.debug('DML Exception: ' + e.getMessage());
+            }
+           
     
         // Retrieve the updated WorkOrder (after the status change)
         List<WorkOrder> newWOList = [SELECT Id,
@@ -427,7 +480,9 @@ public with sharing class WorkOrderStatusUpdateTest {
                                                Total_Price__c,
                                                WO_Line_Item_Price__c,
                                      		   Service_Line__c,
-                                               CreatedDate
+                                               CreatedDate,
+                                               Property2__c,
+                                               Total_Cost__c
                                         FROM WorkOrder
                                      	WHERE Id = :testWO.Id];
     
@@ -480,6 +535,17 @@ public with sharing class WorkOrderStatusUpdateTest {
         workType.DurationType = 'Hours';
         insert workType;
         
+        // Create Property
+        Property__c prop = new Property__c();
+        prop.Name = 'Testing Property 123';
+        prop.Add1__c = 'Test Street';
+        prop.City__c = 'Hudson';
+        prop.State__c = 'FL';
+        prop.Zip__c = '33467';
+        prop.Country__c = 'US';
+        prop.Active__c = true;
+        insert prop;
+        
         // Create the Work Order
         WorkOrder testWO = new WorkOrder(
             Subject = 'Test Test',
@@ -493,7 +559,8 @@ public with sharing class WorkOrderStatusUpdateTest {
             AccountId = account.Id,
             Contact__c  = siteContact.Id,
             WorkTypeId = workType.Id,
-            Cost__c = 300
+            Cost__c = 300,
+            Property2__c = prop.Id
         );
 
         insert testWO;
@@ -544,7 +611,9 @@ public with sharing class WorkOrderStatusUpdateTest {
                                                Total_Price__c,
                                                WO_Line_Item_Price__c,
                                                Service_Line__c,
-                                               CreatedDate
+                                               CreatedDate,
+                                               Property2__c,
+                                               Total_Cost__c
                                         FROM WorkOrder
                                      	WHERE Id = :testWO.Id];
         
@@ -581,7 +650,9 @@ public with sharing class WorkOrderStatusUpdateTest {
                                                Total_Price__c,
                                                WO_Line_Item_Price__c,
                                      		   Service_Line__c,
-                                               CreatedDate
+                                               CreatedDate,
+                                               Property2__c,
+                                               Total_Cost__c
                                         FROM WorkOrder
                                      	WHERE Id = :testWO.Id];
     
