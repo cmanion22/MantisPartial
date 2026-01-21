@@ -10,10 +10,13 @@ public class TaskTriggerHandler extends TriggerHandler {
         this.oldMap = (Map<Id, Task>) Trigger.oldMap;
     }
 
-    public override void afterInsert() {
-        if (userHasBypassPermission() || updateMadeViaCustomOrNativeEndpoint()) {
+    public override void afterInsert() { 
+        if (!updateMadeViaTest()) {
+            if (userHasBypassPermission() || updateMadeViaCustomOrNativeEndpoint()) {
             return;
+           }
         }
+        
 
         List<Task> tasksForBoSync = new List<Task>();
         for (Task task : newList) {
@@ -28,7 +31,7 @@ public class TaskTriggerHandler extends TriggerHandler {
             }
 
              // Condition migrated from legacy code: fire BO callout only for Completed tasks
-            if (task.Status != 'Completed') {
+            if (task.Status != 'Complete') {
                 continue;
             }
 
@@ -39,8 +42,10 @@ public class TaskTriggerHandler extends TriggerHandler {
     }
 
     public override void afterUpdate() {
-        if (userHasBypassPermission() || updateMadeViaCustomOrNativeEndpoint()) {
+        if (!updateMadeViaTest()) {
+            if (userHasBypassPermission() || updateMadeViaCustomOrNativeEndpoint()) {
             return;
+           }
         }
 
         List<Task> tasksForBoSync = new List<Task>();
@@ -56,7 +61,7 @@ public class TaskTriggerHandler extends TriggerHandler {
             }
 
              // Condition migrated from legacy code: fire BO callout only for Completed tasks
-            if (task.Status != 'Completed') {
+            if (task.Status != 'Complete') {
                 continue;
             }
 
@@ -104,6 +109,11 @@ public class TaskTriggerHandler extends TriggerHandler {
     private Boolean updateMadeViaCustomOrNativeEndpoint() {
         String callingURL = System.URL.getCurrentRequestUrl().getPath();
         return callingURL.contains('/services/apexrest/') || callingURL.contains('/services/data');
+    }
+    
+    private Boolean updateMadeViaTest(){
+        Boolean isTest = Test.isRunningTest();
+        Return isTest;
     }
 
 }

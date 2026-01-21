@@ -7,7 +7,7 @@ public class TaskTriggerTestClass {
         
         Test.startTest();
         testTask.Subject = 'Test Task';  
-        testTask.Priority = 'Normal';
+        testTask.Priority = 'Medium';
         testTask.Status = 'Open';       
         insert testTask;
         Test.stopTest(); 
@@ -19,34 +19,36 @@ public class TaskTriggerTestClass {
         // Check if one record is created in Task sObject
     }
     
-    @isTest(SeeAllData=true) static void taskTriggerInsertCompletedTest() {
-        Test.setMock(HttpCalloutMock.class, new HttpEmexCalloutMock(200, 'OK', '{success:true}'));  
-        //Create Data for Task object
-        Task testTask = new Task();
-        
-        Test.startTest();
-        testTask.Subject = 'Test Task';  
-        testTask.Priority = 'Normal';
-        testTask.Status = 'Completed';       
-        insert testTask;
-        Test.stopTest(); 
-        
-        // Now check if it is giving desired results using System.assert
-        // Statement.New Task should be created
-        List<Task> lst = [SELECT Id, Subject, Priority, Status FROM Task WHERE Id = :testTask.Id];
-        System.assertEquals(1, lst.size());
-        // Check if one record is created in Task sObject
-    }
+    @isTest(SeeAllData=true)
+    static void taskTriggerInsertCompletedTest() {
+       Test.setMock(HttpCalloutMock.class, new HttpEmexCalloutMock(200, 'OK', '{success:true}'));
     
- 
+        Task testTask = new Task(
+            Subject = 'Test Task',
+            Priority = 'Medium',
+            Status = 'Complete'
+        );
+    
+        Test.startTest();
+        insert testTask;
+        Test.stopTest();
+    
+        // Verify task creation
+        System.assertEquals(
+            1,
+            [SELECT COUNT() FROM Task WHERE Id = :testTask.Id]
+        );
+    
+    }
+
     
     @isTest(SeeAllData=true) static void taskTriggerUpdateTest() {
         Test.setMock(HttpCalloutMock.class, new HttpEmexCalloutMock(200, 'OK', '{success:true}'));          
 
         Task testTask = new Task();
         testTask.Subject = 'Test Task';  
-        testTask.Priority = 'Normal';
-        testTask.Status = 'Open';
+        testTask.Priority = 'Medium';
+        testTask.Status = 'Not Started';
         
 
         testTask.SyncMessageDisplay__c = false;       
@@ -54,7 +56,7 @@ public class TaskTriggerTestClass {
            
         // Now, our trigger will fire on After update event so update the Records
         Test.startTest();    // Starts the scope of test
-        testTask.Status = 'Completed';
+        testTask.Status = 'Complete';
         
 
         testTask.SyncMessageDisplay__c = false;
@@ -77,8 +79,8 @@ public class TaskTriggerTestClass {
         
         Task testTask = new Task();
         testTask.Subject = 'Test Task';  
-        testTask.Priority = 'Normal';
-        testTask.Status = 'Open';
+        testTask.Priority = 'Medium';
+        testTask.Status = 'Not Started';
         testTask.WhoId=testLead.Id;
         
 
@@ -87,7 +89,7 @@ public class TaskTriggerTestClass {
            
         // Now, our trigger will fire on After update event so update the Records
         Test.startTest();    // Starts the scope of test
-        testTask.Status = 'Completed';
+        testTask.Status = 'Complete';
      
 
         testTask.SyncMessageDisplay__c = false;
@@ -110,8 +112,8 @@ public class TaskTriggerTestClass {
 
         Task testTask = new Task();
         testTask.Subject = 'Test Task';  
-        testTask.Priority = 'Normal';
-        testTask.Status = 'Open';
+        testTask.Priority = 'Medium';
+        testTask.Status = 'Not Started';
        
 
         testTask.SyncMessageDisplay__c = false;       
@@ -119,7 +121,7 @@ public class TaskTriggerTestClass {
            
         // Now, our trigger will fire on After update event so update the Records
         Test.startTest();    // Starts the scope of test
-        testTask.Status = 'Completed';
+        testTask.Status = 'Complete';
         
 
         testTask.SyncMessageDisplay__c = false;
@@ -138,8 +140,8 @@ public class TaskTriggerTestClass {
 
         Task testTask = new Task();
         testTask.Subject = 'Test Task';  
-        testTask.Priority = 'Normal';
-        testTask.Status = 'Open'; 
+        testTask.Priority = 'Medium';
+        testTask.Status = 'Not Started'; 
         
        
         testTask.SyncMessageDisplay__c = false;      
@@ -147,7 +149,7 @@ public class TaskTriggerTestClass {
            
         // Now, our trigger will fire on After update event so update the Records
         Test.startTest();    // Starts the scope of test
-        testTask.Status = 'Completed';
+        testTask.Status = 'Complete';
        
         
         testTask.SyncMessageDisplay__c = false;  
@@ -169,8 +171,8 @@ public class TaskTriggerTestClass {
 
         Task testTask = new Task();
         testTask.Subject = 'Test Task';  
-        testTask.Priority = 'Normal';
-        testTask.Status = 'Open';
+        testTask.Priority = 'Medium';
+        testTask.Status = 'Not Started';
         
        
         testTask.SyncMessageDisplay__c = false;       
@@ -195,4 +197,5 @@ public class TaskTriggerTestClass {
         System.assertEquals(1, lst.size());
         // Check if one record is created in Task sObject
     }
+    
 }
