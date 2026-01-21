@@ -31,7 +31,7 @@ public class TaskTriggerHandler extends TriggerHandler {
             }
 
              // Condition migrated from legacy code: fire BO callout only for Completed tasks
-            if (task.Status != 'Complete') {
+            if (task.Status != 'Completed') {
                 continue;
             }
 
@@ -61,7 +61,7 @@ public class TaskTriggerHandler extends TriggerHandler {
             }
 
              // Condition migrated from legacy code: fire BO callout only for Completed tasks
-            if (task.Status != 'Complete') {
+            if (task.Status != 'Completed') {
                 continue;
             }
 

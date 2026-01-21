@@ -8,7 +8,7 @@ public class TaskTriggerTestClass {
         Test.startTest();
         testTask.Subject = 'Test Task';  
         testTask.Priority = 'Medium';
-        testTask.Status = 'Open';       
+        testTask.Status = 'Not_Started';       
         insert testTask;
         Test.stopTest(); 
         
@@ -26,7 +26,7 @@ public class TaskTriggerTestClass {
         Task testTask = new Task(
             Subject = 'Test Task',
             Priority = 'Medium',
-            Status = 'Complete'
+            Status = 'Completed'
         );
     
         Test.startTest();
@@ -48,7 +48,7 @@ public class TaskTriggerTestClass {
         Task testTask = new Task();
         testTask.Subject = 'Test Task';  
         testTask.Priority = 'Medium';
-        testTask.Status = 'Not Started';
+        testTask.Status = 'Not_Started';
         
 
         testTask.SyncMessageDisplay__c = false;       
@@ -56,7 +56,7 @@ public class TaskTriggerTestClass {
            
         // Now, our trigger will fire on After update event so update the Records
         Test.startTest();    // Starts the scope of test
-        testTask.Status = 'Complete';
+        testTask.Status = 'Completed';
         
 
         testTask.SyncMessageDisplay__c = false;
@@ -80,7 +80,7 @@ public class TaskTriggerTestClass {
         Task testTask = new Task();
         testTask.Subject = 'Test Task';  
         testTask.Priority = 'Medium';
-        testTask.Status = 'Not Started';
+        testTask.Status = 'Not_Started';
         testTask.WhoId=testLead.Id;
         
 
@@ -89,7 +89,7 @@ public class TaskTriggerTestClass {
            
         // Now, our trigger will fire on After update event so update the Records
         Test.startTest();    // Starts the scope of test
-        testTask.Status = 'Complete';
+        testTask.Status = 'Completed';
      
 
         testTask.SyncMessageDisplay__c = false;
@@ -113,7 +113,7 @@ public class TaskTriggerTestClass {
         Task testTask = new Task();
         testTask.Subject = 'Test Task';  
         testTask.Priority = 'Medium';
-        testTask.Status = 'Not Started';
+        testTask.Status = 'Not_Started';
        
 
         testTask.SyncMessageDisplay__c = false;       
@@ -121,7 +121,7 @@ public class TaskTriggerTestClass {
            
         // Now, our trigger will fire on After update event so update the Records
         Test.startTest();    // Starts the scope of test
-        testTask.Status = 'Complete';
+        testTask.Status = 'Completed';
         
 
         testTask.SyncMessageDisplay__c = false;
@@ -141,7 +141,7 @@ public class TaskTriggerTestClass {
         Task testTask = new Task();
         testTask.Subject = 'Test Task';  
         testTask.Priority = 'Medium';
-        testTask.Status = 'Not Started'; 
+        testTask.Status = 'Not_Started'; 
         
        
         testTask.SyncMessageDisplay__c = false;      
@@ -149,7 +149,7 @@ public class TaskTriggerTestClass {
            
         // Now, our trigger will fire on After update event so update the Records
         Test.startTest();    // Starts the scope of test
-        testTask.Status = 'Complete';
+        testTask.Status = 'Completed';
        
         
         testTask.SyncMessageDisplay__c = false;  
@@ -172,7 +172,7 @@ public class TaskTriggerTestClass {
         Task testTask = new Task();
         testTask.Subject = 'Test Task';  
         testTask.Priority = 'Medium';
-        testTask.Status = 'Not Started';
+        testTask.Status = 'Not_Started';
         
        
         testTask.SyncMessageDisplay__c = false;       
